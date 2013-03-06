@@ -1,0 +1,35 @@
+#######################################
+# Syntax Coloring Map Parallel
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Parallel	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin			KEYWORD2
+write			KEYWORD2
+read			KEYWORD2
+setAddressSetupTiming	KEYWORD2
+setPulseTiming		KEYWORD2
+setCycleTiming		KEYWORD2
+setMode			KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+PARALLEL_CS_0		LITERAL1
+PARALLEL_CS_1		LITERAL1
+PARALLEL_CS_3		LITERAL1
+PARALLEL_CS_NONE	LITERAL1
+
+READ_MODE_NCS_CTRL	LITERAL1
+READ_MODE_NRD_CTRL	LITERAL1
+
+WRITE_MODE_NCS_CTRL	LITERAL1
+WRITE_MODE_NWE_CTRL	LITERAL1
