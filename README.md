@@ -5,9 +5,6 @@ Library to enable the External Memory Bus/Static Memory Controller on the
 Arduino Due board. It's more of an external memory interface than a true 
 parallel port. 
 
-This library implements a limited functionality parallel port on the Arduino 
-DUE board (ARM Cortex-M3 based).  
-    
 The DUE board pins out the data bus on the extended digital headers along with 
 the control signals NC1 and NWR.  Some of the address signals are connected to 
 the PWM pins (A0-A5), but a full address bus is unavailable.  There is also 
