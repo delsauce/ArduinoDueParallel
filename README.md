@@ -6,7 +6,7 @@ Arduino Due board. It's more of an external memory interface than a true
 parallel port. 
 
 The DUE board pins out the data bus on the extended digital headers along with 
-the control signals NC1 and NWR.  Some of the address signals are connected to 
+the control signals NCS1 and NWR.  Some of the address signals are connected to 
 the PWM pins (A0-A5), but a full address bus is unavailable.  There is also 
 conflict between the SS1 pin for SPI and the NRD signal used for the parallel 
 bus.  In short the hardware wasn't designed for use with external parallel 
