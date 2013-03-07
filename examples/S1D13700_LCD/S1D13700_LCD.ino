@@ -35,7 +35,7 @@ void setup() {
   digitalWrite(lcdOn, 1);
 
   // Configure parallel bus for NCS1, A0, and NWE (no read signal)
-  Parallel.begin(PARALLEL_CS_1, 1, 0, 1);
+  Parallel.begin(PARALLEL_BUS_WIDTH_8, PARALLEL_CS_1, 1, 0, 1);
 
   // Configure conservative bus timings.  This could be pushed faster...
   Parallel.setAddressSetupTiming(5,1,5,1);
@@ -93,6 +93,17 @@ void configureLCD() {
   
   // Cursor direction	
   Parallel.write(0x01, 0x4C);
+
+  // clear text layer
+  Parallel.write(0x01, 0x46);
+  Parallel.write(0x00, 0x00);
+  Parallel.write(0x00, 0x00);
+  
+  Parallel.write(0x01, 0x42);
+  for (int i=0; i < 40*30; i++)
+  {
+	  Parallel.write(0x00, ' ');
+  }
 	
   // draw vertical lines 
   Parallel.write(0x01, 0x46);
@@ -107,5 +118,6 @@ void configureLCD() {
   
   // Turn display on	
   Parallel.write(0x01, 0x59);		// DISP_ON
-  Parallel.write(0x00, 0x10);
+  Parallel.write(0x00, 0x16);
 }
+

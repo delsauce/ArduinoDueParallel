@@ -2,8 +2,7 @@
   Parallel.h
 
   This library implements a limited functionality parallel port on the Arduino
-  DUE board (ARM Cortex-M3 based).  It's more of an external memory interface
-  than a true parallel port.
+  DUE board (ARM Cortex-M3 based).  
   
   The DUE board pins out the data bus on the extended digital headers along 
   with the control signals NC1 and NWR.  Some of the address signals are 
@@ -16,8 +15,8 @@
   controllers that used index addressing and can speed up read/write times 
   considerably.
   
-  To use this library, place the files in a folder under the libraries 
-  directory in your sketches folder.
+  To use this library, place the files in a folder called 'Parallel' under the 
+  libraries directory in your sketches folder.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -49,6 +48,12 @@ typedef enum
 	PARALLEL_CS_NONE
 } ParallelChipSelect_t;
 
+typedef enum
+{
+	PARALLEL_BUS_WIDTH_8,
+	PARALLEL_BUS_WIDTH_16
+} ParallelBusWidth_t;
+
 typedef enum 
 {
 	READ_MODE_NCS_CTRL = SMC_MODE_READ_MODE_NCS_CTRL,
@@ -68,7 +73,11 @@ extern const uint32_t chipSelectAddresses[];
 class ParallelClass {
 public:
   ParallelClass() { };
-  void begin(ParallelChipSelect_t cs, uint8_t numAddressLines, uint8_t readEnable, uint8_t writeEnable);
+  void begin(	ParallelBusWidth_t width,
+				ParallelChipSelect_t cs, 
+				uint8_t numAddressLines, 
+				uint8_t readEnable, 
+				uint8_t writeEnable);
   
   // Configure the address setup time.  See datasheet for calculations.
   void setAddressSetupTiming(	uint8_t cyclesBeforeNWE, 

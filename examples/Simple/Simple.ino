@@ -27,7 +27,7 @@ void setup() {
   pinMode(led, OUTPUT);
 
   // Configure parallel bus with no control signals and default timings
-  Parallel.begin(PARALLEL_CS_NONE, 0, 0, 0);
+  Parallel.begin(PARALLEL_BUS_WIDTH_8, PARALLEL_CS_NONE, 0, 0, 0);
 }
 
 // the loop routine runs over and over again forever:

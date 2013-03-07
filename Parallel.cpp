@@ -2,8 +2,7 @@
   Parallel.cpp
 
   This library implements a limited functionality parallel port on the Arduino
-  DUE board (ARM Cortex-M3 based). It's more of an external memory interface
-  than a true parallel port. 
+  DUE board (ARM Cortex-M3 based).  
   
   The DUE board pins out the data bus on the extended digital headers along 
   with the control signals NC1 and NWR.  Some of the address signals are 
@@ -16,8 +15,8 @@
   controllers that used index addressing and can speed up read/write times 
   considerably.
   
-  To use this library, place the files in a folder under the libraries 
-  directory in your sketches folder.
+  To use this library, place the files in a folder called 'Parallel' under the 
+  libraries directory in your sketches folder.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -37,7 +36,7 @@
 #include "Parallel.h"
 //#include "smc.h"
 
-// Data bus, 8-bits.  16-bit bus not supported because D8/D9 pins (PC10/PC11) are not connected on the DUE.
+// Data bus  16-bit bus not fully supported because D8/D9 pins (PC10/PC11) are not connected on the DUE.
 const PinDescription DataPins[]=
 {
 	{ PIOC, PIO_PC2A_D0,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 34
@@ -47,7 +46,17 @@ const PinDescription DataPins[]=
 	{ PIOC, PIO_PC6A_D4,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 38
 	{ PIOC, PIO_PC7A_D5,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 39
 	{ PIOC, PIO_PC8A_D6,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 40
-	{ PIOC, PIO_PC9A_D7,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }	// PIN 41
+	{ PIOC, PIO_PC9A_D7,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 41	
+	{ PIOC, PIO_PC10A_D8,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// N/C
+	{ PIOC, PIO_PC11A_D9,          ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// N/C
+	{ PIOC, PIO_PC12A_D10,         ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 51
+	{ PIOC, PIO_PC13A_D11,         ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 50
+	{ PIOC, PIO_PC14A_D12,         ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 49
+	{ PIOC, PIO_PC15A_D13,         ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 48
+	{ PIOC, PIO_PC16A_D14,         ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },	// PIN 47
+	{ PIOC, PIO_PC17A_D15,         ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }	// PIN 46
+	
+	
 };	
 
 // Not much you can do with the address pins, most aren't available on the stock DUE board.
@@ -63,12 +72,29 @@ const PinDescription AddressPins[]=
 	{ PIOC, PIO_PC23A_A2,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM7
 	{ PIOC, PIO_PC24A_A3,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM6
 	{ PIOC, PIO_PC25A_A4,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM5
-	{ PIOC, PIO_PC26A_A5,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }  // PWM4
+	{ PIOC, PIO_PC26A_A5,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM4
+	{ PIOC, PIO_PC27A_A6,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // N/C
+	{ PIOC, PIO_PC28A_A7,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM3	
+	{ PIOC, PIO_PC29A_A8,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM10
+	{ PIOC, PIO_PC30A_A9,		  ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // RXL (RX LED)
+	{ PIOD, PIO_PD0A_A10,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PIN 25
+	{ PIOD, PIO_PD1A_A11,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PIN 26			
+	{ PIOD, PIO_PD2A_A12,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PIN 27
+	{ PIOD, PIO_PD3A_A13,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PIN 28
+	{ PIOD, PIO_PD4A_A14,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // TXD0
+	{ PIOD, PIO_PD5A_A15,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // RXD0
+	{ PIOD, PIO_PD6A_A16,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PIN 25
+	{ PIOD, PIO_PD7A_A17,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM11
+	{ PIOA, PIO_PA25B_A18,		  ID_PIOA, PIO_PERIPH_B, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // MISO
+	{ PIOA, PIO_PA26B_A19,		  ID_PIOA, PIO_PERIPH_B, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // MOSI
+	{ PIOA, PIO_PA27B_A20,		  ID_PIOA, PIO_PERIPH_B, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // SPCK
+	{ PIOD, PIO_PD8A_A21,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // PWM12
+	{ PIOD, PIO_PD9A_A22,		  ID_PIOD, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }  // PIN 30
 };
 
 // NOTE: the read signal NRD conflicts with the SPI chip select 1 -- make sure that pin isn't used if you need NRD
 const PinDescription ReadPin =
-	{ PIOA, PIO_PA29B_NRD,		  ID_PIOA, PIO_PERIPH_B, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER };  // PWM4
+	{ PIOA, PIO_PA29B_NRD,		  ID_PIOA, PIO_PERIPH_B, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }; // PWM4
 
 const PinDescription WritePin =
 	{ PIOC, PIO_PC18A_NWE,        ID_PIOC, PIO_PERIPH_A, PIO_PULLUP, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }; // PIN 45
@@ -91,14 +117,29 @@ const uint32_t chipSelectAddresses[] =
 	0x63000000
 };
 
-void ParallelClass::begin(ParallelChipSelect_t cs, uint8_t numAddressLines, uint8_t readEnable, uint8_t writeEnable)
+void ParallelClass::begin(	ParallelBusWidth_t width, 
+							ParallelChipSelect_t cs, 
+							uint8_t numAddressLines, 
+							uint8_t readEnable, 
+							uint8_t writeEnable)
 {	
+	uint8_t dataPinCount = 0;
+	
 	// Save the chip select
 	_cs = cs;
 	
 	// Configure GPIOs
 	// Data Bus
-	for (int i=0; i < (sizeof(DataPins)/sizeof(DataPins[0])); i++)
+	if (width == PARALLEL_BUS_WIDTH_16)
+	{
+		dataPinCount = 16;
+	}
+	else
+	{
+		dataPinCount = 8;
+	}
+	
+	for (int i=0; i < dataPinCount; i++)
 	{
 		PIO_Configure(DataPins[i].pPort,
 			DataPins[i].ulPinType,
