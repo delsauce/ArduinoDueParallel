@@ -254,5 +254,17 @@ __attribute__((optimize("O0"))) uint8_t ParallelClass::read(uint32_t offset)
 	return *((volatile uint8_t *)(_addr + (offset&0x00FFFFFF)));
 }
 
+// Gets the address of the memory mapped peripheral.  Note, the begin() 
+// function should have been called first in order for this to work
+// properly.
+uint32_t ParallelClass::getAddress(void)
+{
+  if (_cs < PARALLEL_CS_NONE)
+    return chipSelectAddresses[_cs];
+  else
+    return chipSelectAddresses[0];
+}
+  
+
 // Create our object
 ParallelClass Parallel = ParallelClass();

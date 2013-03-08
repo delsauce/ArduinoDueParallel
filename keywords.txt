@@ -18,6 +18,7 @@ setAddressSetupTiming	KEYWORD2
 setPulseTiming		KEYWORD2
 setCycleTiming		KEYWORD2
 setMode			KEYWORD2
+getAddress		KEYWORD2
 
 
 #######################################

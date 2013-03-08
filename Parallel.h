@@ -101,6 +101,9 @@ public:
   void write(uint32_t offset, uint8_t data) ;
   uint8_t read(uint32_t offset);  
 
+  // returns the address of the memory mapped peripheral
+  uint32_t getAddress();	
+
 private:
   ParallelChipSelect_t _cs;
   uint32_t _addr;
