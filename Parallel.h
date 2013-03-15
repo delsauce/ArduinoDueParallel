@@ -74,26 +74,26 @@ class ParallelClass {
 public:
   ParallelClass() { };
   void begin(	ParallelBusWidth_t width,
-				ParallelChipSelect_t cs, 
-				uint8_t numAddressLines, 
-				uint8_t readEnable, 
-				uint8_t writeEnable);
+				      ParallelChipSelect_t cs, 
+				      uint8_t numAddressLines, 
+				      uint8_t readEnable, 
+				      uint8_t writeEnable);
   
   // Configure the address setup time.  See datasheet for calculations.
   void setAddressSetupTiming(	uint8_t cyclesBeforeNWE, 
-								uint8_t cyclesBeforeNCSWrite,
-								uint8_t cyclesBeforeNRD,
-								uint8_t cyclesBeforeNCSRead);
+								              uint8_t cyclesBeforeNCSWrite,
+								              uint8_t cyclesBeforeNRD,
+								              uint8_t cyclesBeforeNCSRead);
   
   // Configure the pulse width of NCS, NWE, and NRD. See datasheet for calculations.
   void setPulseTiming(	uint8_t cyclesNWEWidth,
-						uint8_t cyclesNCSWidthWrite,
-						uint8_t cyclesNRDWidth,
-						uint8_t cyclesNCSWidthRead);
+						            uint8_t cyclesNCSWidthWrite,
+						            uint8_t cyclesNRDWidth,
+						            uint8_t cyclesNCSWidthRead);
   
   // Set the total read/write cycle time. See datasheet for calculations.
   void setCycleTiming(	uint8_t cyclesWriteTotal,
-						uint8_t cyclesReadTotal);
+						            uint8_t cyclesReadTotal);
 									
   // Set how the which signals latch data in the read and write modes (NCS or NRD/NWE).
   void setMode(ReadModeFlags_t readMode, WriteModeFlags_t writeMode);

@@ -117,11 +117,11 @@ const uint32_t chipSelectAddresses[] =
 	0x63000000
 };
 
-void ParallelClass::begin(	ParallelBusWidth_t width, 
-							ParallelChipSelect_t cs, 
-							uint8_t numAddressLines, 
-							uint8_t readEnable, 
-							uint8_t writeEnable)
+void ParallelClass::begin(  ParallelBusWidth_t width, 
+							              ParallelChipSelect_t cs, 
+							              uint8_t numAddressLines, 
+							              uint8_t readEnable, 
+							              uint8_t writeEnable)
 {	
 	uint8_t dataPinCount = 0;
 	
@@ -205,10 +205,10 @@ void ParallelClass::begin(	ParallelBusWidth_t width,
 }
 
 // Configure the address setup time.  See datasheet for calculations
-void ParallelClass::setAddressSetupTiming(	uint8_t cyclesBeforeNWE, 
-											uint8_t cyclesBeforeNCSWrite,
-											uint8_t cyclesBeforeNRD,
-											uint8_t cyclesBeforeNCSRead)
+void ParallelClass::setAddressSetupTiming(uint8_t cyclesBeforeNWE, 
+											                    uint8_t cyclesBeforeNCSWrite,
+											                    uint8_t cyclesBeforeNRD,
+											                    uint8_t cyclesBeforeNCSRead)
 {
 	smc_set_setup_timing(SMC,_cs,SMC_SETUP_NWE_SETUP(cyclesBeforeNWE)
 		| SMC_SETUP_NCS_WR_SETUP(cyclesBeforeNCSWrite)
@@ -217,10 +217,10 @@ void ParallelClass::setAddressSetupTiming(	uint8_t cyclesBeforeNWE,
 }
 
 // Configure the pulse width of NCS, NWE, and NRD
-void ParallelClass::setPulseTiming(	uint8_t cyclesNWEWidth,
-									uint8_t cyclesNCSWidthWrite,
-									uint8_t cyclesNRDWidth,
-									uint8_t cyclesNCSWidthRead)
+void ParallelClass::setPulseTiming( uint8_t cyclesNWEWidth,
+									                  uint8_t cyclesNCSWidthWrite,
+									                  uint8_t cyclesNRDWidth,
+									                  uint8_t cyclesNCSWidthRead)
 {
 	smc_set_pulse_timing(SMC, _cs, SMC_PULSE_NWE_PULSE(cyclesNWEWidth)
 		| SMC_PULSE_NCS_WR_PULSE(cyclesNCSWidthWrite)
@@ -229,8 +229,8 @@ void ParallelClass::setPulseTiming(	uint8_t cyclesNWEWidth,
 }
 
 // Set the total read/write cycle time
-void ParallelClass::setCycleTiming(uint8_t cyclesWriteTotal,
-									uint8_t cyclesReadTotal)
+void ParallelClass::setCycleTiming( uint8_t cyclesWriteTotal,
+									                  uint8_t cyclesReadTotal)
 {
 	smc_set_cycle_timing(SMC, _cs, SMC_CYCLE_NWE_CYCLE(cyclesWriteTotal)
 		| SMC_CYCLE_NRD_CYCLE(cyclesReadTotal));
